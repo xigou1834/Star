@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>搜索结果 - STAR</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* 高亮样式 */
+    .highlight {
+      background-color: #fff8c5;
+      padding: 0 2px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main>
+    <section class="search-results">
+      <div class="search-header">
+        <h1>"<span id="searchQuery"></span>" 的搜索结果</h1>
+        <p>找到 <span id="resultCount">0</span> 条结果</p>
+      </div>
+      <div id="resultsContainer" class="results-container"></div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="component-loader.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q') || '';
+      document.getElementById('searchQuery').textContent = query;
+
+      // 模拟搜索结果数据
+      const allResults = [
+        {
+          title: "STAR Vision 视觉技术",
+          url: "https://www.star.com/products/vision",
+          snippet: "STAR Vision是我们最新的视觉处理技术，提供革命性的图像识别和分析能力...",
+          date: ""
+        },
+        {
+          title: "STAR 开发者文档",
+          url: "https://developer.star.com/docs/vision-api",
+          snippet: "Vision API文档 - 了解如何使用STAR Vision技术开发您的应用程序...",
+          date: ""
+        },
+        {
+          title: "新闻: STAR发布Vision 2.0",
+          url: "https://www.star.com/news/vision-2-release",
+          snippet: "2025年6月15日 - STAR今天宣布推出Vision 2.0，具有更快的处理速度和更高的准确率...",
+          date: "2025年6月15日"
+        },
+        {
+          title: "STAR Vision技术白皮书",
+          url: "https://www.star.com/resources/whitepapers/vision",
+          snippet: "下载我们的技术白皮书，深入了解STAR Vision的工作原理和技术规格...",
+          date: ""
+        },
+        {
+          title: "Vision技术常见问题",
+          url: "https://support.star.com/vision-faq",
+          snippet: "关于STAR Vision技术的常见问题解答，包括系统要求、兼容性和性能优化...",
+          date: ""
+        }
+      ];
+
+      function highlightText(text, term) {
+        if (!term) return text;
+        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${escaped})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+      }
+
+      function getFilteredResults(q) {
+        if (!q) return allResults;
+        const lowQ = q.toLowerCase();
+        return allResults.filter(r =>
+          r.title.toLowerCase().includes(lowQ) ||
+          r.snippet.toLowerCase().includes(lowQ)
+        );
+      }
+
+      function renderResults(results, q) {
+        const container = document.getElementById('resultsContainer');
+        const countElem = document.getElementById('resultCount');
+        if (!results.length) {
+          container.innerHTML = `
+            <p>没有找到与"${q}"相关的结果</p>
+            <ul>
+              <li>检查输入是否正确</li>
+              <li>尝试不同的关键词</li>
+              <li>使用更通用的搜索词</li>
+            </ul>`;
+          countElem.textContent = '0';
+          return;
+        }
+        countElem.textContent = results.length;
+        container.innerHTML = results.map(r => `
+          <div class="result-card">
+            <h2><a href="${r.url}" target="_blank">${highlightText(r.title, q)}</a></h2>
+            <p class="url">${r.url}</p>
+            ${r.date ? `<p class="date">${r.date}</p>` : ''}
+            <p class="snippet">${highlightText(r.snippet, q)}</p>
+          </div>
+        `).join('');
+      }
+
+      const results = getFilteredResults(query);
+      renderResults(results, query);
+    });
+  </script>
+</body>
+</html>
