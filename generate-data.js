@@ -1,31 +1,33 @@
-// generate-data.js
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 
-// 排除以下页面不参与搜索索引
-const excludedFiles = ['header.html', 'footer.html', 'search-results.html'];
+const directory = __dirname;
+const excludeFiles = ['header.html', 'footer.html', 'search-results.html'];
+const outputFile = path.join(directory, 'data.json');
 
-const data = [];
+function extractContent(html, filePath) {
+  const dom = new JSDOM(html);
+  const document = dom.window.document;
 
-const htmlFiles = fs.readdirSync(__dirname).filter(file => {
-  return file.endsWith('.html') && !excludedFiles.includes(file);
-});
+  const title = document.querySelector('title')?.textContent.trim() || '无标题';
+  const body = document.body?.textContent.replace(/\s+/g, ' ').trim().slice(0, 1000) || '';
 
-for (const file of htmlFiles) {
-  const content = fs.readFileSync(path.join(__dirname, file), 'utf-8');
-  const dom = new JSDOM(content);
-  const doc = dom.window.document;
-
-  const title = doc.querySelector('title')?.textContent.trim() || file;
-  const text = doc.body?.textContent?.replace(/\s+/g, ' ').trim() || '';
-
-  data.push({
+  return {
     title,
-    content: text,
-    url: file
-  });
+    content: body,
+    url: path.basename(filePath),
+  };
 }
 
-fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf-8');
-console.log(`✅ 已生成 data.json，共 ${data.length} 条记录`);
+const files = fs.readdirSync(directory)
+  .filter(file => file.endsWith('.html') && !excludeFiles.includes(file));
+
+const results = files.map(file => {
+  const fullPath = path.join(directory, file);
+  const html = fs.readFileSync(fullPath, 'utf-8');
+  return extractContent(html, file);
+});
+
+fs.writeFileSync(outputFile, JSON.stringify(results, null, 2), 'utf-8');
+console.log(`已生成 ${outputFile} 共 ${results.length} 条数据`);
