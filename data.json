@@ -1,12 +1,37 @@
 [
   {
     "title": "Star",
+    "url": "blog-post-1.html",
+    "content": "dengruixun成功通过三独区赛！ dengruixun在三独区赛中成功拿下了进入市赛的名额！ dengruixun 2025年7月5日"
+  },
+  {
+    "title": "Star",
+    "url": "contact.html",
+    "content": "关于我们 QQ : 2632305468 微信 : 17570100361 邮箱 : xigou1834@163.com 电话 : 17570100361"
+  },
+  {
+    "title": "无标题",
+    "url": "footer.html",
+    "content": "版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。"
+  },
+  {
+    "title": "无标题",
+    "url": "header.html",
+    "content": "Star 产品 软件 网页 产品 资源 资源中心 博客 Star论坛 dengruixun的博客 开发者 帮助我们 加入我们 技术与支持 联系我们 技术文档"
+  },
+  {
+    "title": "Star",
     "url": "index.html",
     "content": "全新视角。 发现一种革命性的方式来体验您的世界。 凭借先进的技术和创新的设计，Star让未来更加光明。 了解更多 公司新闻 dengruixun成功通过三独区赛！ 2025年7月5日 创新设计获得国际奖项 2025年5月28日 创新发展 人工智能研究 我们的AI实验室正在开发下一代智能交互系统... 可持续技术 STAR致力于开发环保节能的创新解决方案..."
   },
   {
     "title": "搜索结果 - STAR",
     "url": "search-results.html",
-    "content": "\"\" 的搜索结果 找到 0 条结果 document.addEventListener('DOMContentLoaded', () => { const urlParams = new URLSearchParams(window.location.search); const query = urlParams.get('q') || ''; document.getElementById('searchQuery').textContent = query; // 模拟搜索结果数据 const allResults = [ { title: \"STAR Vision 视觉技术\", url: \"https://www.star.com/products/vision\", snippet: \"STAR Vision是我们最新的视觉处理技术，提供革命性的图像识别和分析能力...\", date: \"\" }, { title: \"STAR 开发者文档\", url: \"https://developer.star.com/docs/vision-api\", snippet: \"Vision API文档 - 了解如何使用STAR Vision技术开发您的应用程序...\", date: \"\" }, { title: \"新闻: STAR发布Vision 2.0\", url: \"https://www.star.com/news/vision-2-release\", snippet: \"2025年6月15日 - STAR今天宣布推出Vision 2.0，具有更快的处理速度和更高的准确率...\", date: \"2025年6月15日\" }, { title: \"STAR Vision技术白皮书\", url: \"https://www.star.com/resources/whitepapers/vision\", snippet: \"下载我们的技术白皮书，深入了解STAR Vision的工作原理和技术规格...\", date: \"\" }, { title: \"Vision技术常见问题\", url: \"https://support.star.com/vision-faq\", snippet: \"关于STAR Vision技术的常见问题解答，包括系统要求、兼容性和性能优化...\", d"
+    "content": "STAR 产品 软件 网页 产品 资源 资源中心 博客 STAR论坛 开发者 帮助我们 开发与创新 加入我们 技术与支持 联系我们 “” 的搜索结果 找到 0 条结果 版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。"
+  },
+  {
+    "title": "Star",
+    "url": "Technical documentation.html",
+    "content": "Github bilibili"
   }
 ]
