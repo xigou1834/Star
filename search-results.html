@@ -13,189 +13,128 @@
       border-radius: 3px;
       font-weight: 500;
     }
-    .search-results {
-      max-width: 700px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .search-header h1 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #1d1d1f;
-    }
-    .search-header p {
-      color: #86868b;
-      font-size: 14px;
-    }
-    .result-card {
-      margin-bottom: 30px;
-      padding-bottom: 30px;
-      border-bottom: 1px solid #d2d2d7;
-    }
-    .result-card h2 {
-      font-size: 20px;
-      font-weight: 500;
-      margin-bottom: 5px;
-      line-height: 1.3;
-    }
-    .result-card h2 a {
-      color: #1a73e8;
-      text-decoration: none;
-    }
-    .result-card h2 a:hover {
-      text-decoration: underline;
-    }
-    .result-card .url {
-      color: #0d652d;
-      font-size: 14px;
-      margin-bottom: 5px;
-      word-break: break-word;
-    }
-    .result-card .snippet {
-      color: #515154;
-      font-size: 16px;
-      line-height: 1.5;
-    }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="nav-container">
-        <div class="logo"><a href="index.html" style="color: inherit; text-decoration: none;">STAR</a></div>
-        <ul class="nav-links">
-          <li class="dropdown">
-            <a href="#">产品</a>
-            <div class="dropdown-content">
-              <a href="#">软件</a>
-              <a href="#">网页</a>
-              <a href="#">产品</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#">资源</a>
-            <div class="dropdown-content">
-              <a href="https://xigou1834.github.io/Star-V1.0/">资源中心</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#">博客</a>
-            <div class="dropdown-content">
-              <a href="#">Star论坛</a>
-              <a href="https://luogudengruixun.blogspot.com/">dengruixun的博客</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#">开发者</a>
-            <div class="dropdown-content">
-              <a href="#">帮助我们</a>
-              <a href="#">开发与创新</a>
-              <a href="#">加入我们</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a href="#">技术与支持</a>
-            <div class="dropdown-content">
-              <a href="contact.html">联系我们</a>
-              <a href="#">技术文档</a>
-            </div>
-          </li>
-          <li class="dropdown search-dropdown active">
-            <a href="#"><i class="fas fa-search"></i></a>
-            <div class="dropdown-content search-panel">
-              <form id="searchForm" action="search-results.html" method="GET">
-                <input type="text" name="q" placeholder="搜索..." id="searchInput" value="">
-                <button type="submit"><i class="fas fa-search"></i></button>
-              </form>
-            </div>
-          </li>
-        </ul>
+
+<header>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">
+        <a href="index.html" class="logo-link">Star</a>
       </div>
-    </nav>
-  </header>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li class="dropdown">
+          <a href="#">产品</a>
+          <div class="dropdown-content">
+            <a href="#">软件</a>
+            <a href="#">网页</a>
+            <a href="#">硬件</a>
+          </div>
+        </li>
+        <li class="dropdown">
+          <a href="#">开发者</a>
+          <div class="dropdown-content">
+            <a href="#">文档</a>
+            <a href="#">API</a>
+          </div>
+        </li>
+        <li><a href="#">关于我们</a></li>
+        <li class="dropdown search-dropdown">
+          <a href="#"><i class="fas fa-search"></i></a>
+          <div class="dropdown-content search-panel">
+            <form action="search-results.html" method="get">
+              <input type="text" name="q" placeholder="搜索..." />
+              <button type="submit"><i class="fas fa-search"></i></button>
+            </form>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
 
-  <main>
-    <section class="search-results">
-      <div class="search-header">
-        <h1>搜索结果："<span id="searchQuery"></span>"</h1>
-        <p>找到 <span id="resultCount">0</span> 条结果</p>
-      </div>
-      <div id="resultsContainer"></div>
-    </section>
-  </main>
+<main>
+  <section class="search-results">
+    <div class="search-header">
+      <h1>"<span id="searchQuery"></span>" 的搜索结果</h1>
+      <p>找到 <span id="resultCount">0</span> 条结果</p>
+    </div>
+    <div id="resultsContainer" class="results-container"></div>
+  </section>
+</main>
 
-  <footer>
-    <p>版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。</p>
-  </footer>
+<footer>
+  <p>版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。</p>
+</footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const query = new URLSearchParams(window.location.search).get('q')?.trim() || '';
-      document.getElementById('searchQuery').textContent = query;
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('q') || '';
+    document.getElementById('searchQuery').textContent = query;
 
-      const resultsContainer = document.getElementById('resultsContainer');
-      const resultCountEl = document.getElementById('resultCount');
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        const lowerQuery = query.toLowerCase();
+        const filtered = data.filter(item =>
+          item.title.toLowerCase().includes(lowerQuery) ||
+          item.content.toLowerCase().includes(lowerQuery)
+        );
 
-      function highlight(text, keyword) {
-        const safeKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(${safeKeyword})`, 'gi');
-        return text.replace(regex, '<span class="highlight">$1</span>');
-      }
+        const container = document.getElementById('resultsContainer');
+        const resultCount = document.getElementById('resultCount');
 
-      function showNoResults() {
-        resultsContainer.innerHTML = `
-          <p>没有找到与"<strong>${query}</strong>"相关的结果。</p>
-          <p>建议：</p>
-          <ul>
-            <li>检查输入是否正确</li>
-            <li>尝试不同的关键词</li>
-            <li>使用更通用的搜索词</li>
-          </ul>`;
-        resultCountEl.textContent = '0';
-      }
+        if (filtered.length === 0) {
+          container.innerHTML = `
+            <p>没有找到与"<strong>${query}</strong>"相关的结果。</p>
+            <p>建议：</p>
+            <ul>
+              <li>检查输入是否正确</li>
+              <li>尝试不同的关键词</li>
+              <li>使用更通用的搜索词</li>
+            </ul>
+          `;
+          resultCount.textContent = '0';
+          return;
+        }
 
-      if (!query) {
-        showNoResults();
-        return;
-      }
+        resultCount.textContent = filtered.length;
 
-      fetch('data.json')
-        .then(res => res.json())
-        .then(data => {
-          const lowerQuery = query.toLowerCase();
-          const results = data.filter(item =>
-            item.title.toLowerCase().includes(lowerQuery) ||
-            item.content.toLowerCase().includes(lowerQuery)
-          );
+        function highlight(text, keyword) {
+          const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          return text.replace(new RegExp(`(${escaped})`, 'gi'), '<span class="highlight">$1</span>');
+        }
 
-          if (!results.length) return showNoResults();
+        container.innerHTML = filtered.map(item => {
+          let snippet = item.content;
+          const index = snippet.toLowerCase().indexOf(lowerQuery);
+          if (index >= 0) {
+            const start = Math.max(0, index - 20);
+            const end = Math.min(snippet.length, index + 80);
+            snippet = snippet.slice(start, end) + (end < snippet.length ? '...' : '');
+          } else {
+            snippet = snippet.slice(0, 100) + '...';
+          }
 
-          resultCountEl.textContent = results.length;
-          resultsContainer.innerHTML = results.map(item => {
-            let snippet = item.content;
-            const index = snippet.toLowerCase().indexOf(lowerQuery);
-            if (index >= 0) {
-              const start = Math.max(0, index - 30);
-              const end = Math.min(snippet.length, index + 70);
-              snippet = snippet.slice(start, end) + (end < snippet.length ? '...' : '');
-            } else {
-              snippet = snippet.slice(0, 100) + (snippet.length > 100 ? '...' : '');
-            }
+          return `
+            <div class="result-card">
+              <h2><a href="${item.url}" target="_blank">${highlight(item.title, query)}</a></h2>
+              <p class="url">${item.url}</p>
+              <p class="snippet">${highlight(snippet, query)}</p>
+            </div>
+          `;
+        }).join('');
+      })
+      .catch(err => {
+        document.getElementById('resultsContainer').innerHTML = `<p>加载搜索数据失败，请稍后重试。</p>`;
+        document.getElementById('resultCount').textContent = '0';
+        console.error(err);
+      });
+  });
+</script>
 
-            return `
-              <div class="result-card">
-                <h2><a href="${item.url}" target="_blank" rel="noopener noreferrer">${highlight(item.title, query)}</a></h2>
-                <p class="url">${item.url}</p>
-                <p class="snippet">${highlight(snippet, query)}</p>
-              </div>`;
-          }).join('');
-        })
-        .catch(err => {
-          console.error(err);
-          resultsContainer.innerHTML = `<p>无法加载搜索数据，请稍后重试。</p>`;
-        });
-    });
-  </script>
 </body>
 </html>
