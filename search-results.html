@@ -73,7 +73,43 @@
               <a href="#">产品</a>
             </div>
           </li>
-          <!-- 其他导航略 -->
+          <li class="dropdown">
+            <a href="#">资源</a>
+            <div class="dropdown-content">
+              <a href="https://xigou1834.github.io/Star-V1.0/">资源中心</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#">博客</a>
+            <div class="dropdown-content">
+              <a href="#">Star论坛</a>
+              <a href="https://luogudengruixun.blogspot.com/">dengruixun的博客</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#">开发者</a>
+            <div class="dropdown-content">
+              <a href="#">帮助我们</a>
+              <a href="#">开发与创新</a>
+              <a href="#">加入我们</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#">技术与支持</a>
+            <div class="dropdown-content">
+              <a href="contact.html">联系我们</a>
+              <a href="#">技术文档</a>
+            </div>
+          </li>
+          <li class="dropdown search-dropdown active">
+            <a href="#"><i class="fas fa-search"></i></a>
+            <div class="dropdown-content search-panel">
+              <form id="searchForm" action="search-results.html" method="GET">
+                <input type="text" name="q" placeholder="搜索..." id="searchInput" value="">
+                <button type="submit"><i class="fas fa-search"></i></button>
+              </form>
+            </div>
+          </li>
         </ul>
       </div>
     </nav>
@@ -85,7 +121,6 @@
         <h1>搜索结果："<span id="searchQuery"></span>"</h1>
         <p>找到 <span id="resultCount">0</span> 条结果</p>
       </div>
-
       <div id="resultsContainer"></div>
     </section>
   </main>
