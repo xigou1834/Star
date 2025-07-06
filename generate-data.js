@@ -1,51 +1,31 @@
+// generate-data.js
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 
-const folderPath = path.resolve(__dirname);
-const outputFile = path.join(folderPath, 'data.json');
+// 排除以下页面不参与搜索索引
+const excludedFiles = ['header.html', 'footer.html', 'search-results.html'];
 
-async function extractDataFromFile(filePath) {
-  const content = await fs.promises.readFile(filePath, 'utf-8');
+const data = [];
+
+const htmlFiles = fs.readdirSync(__dirname).filter(file => {
+  return file.endsWith('.html') && !excludedFiles.includes(file);
+});
+
+for (const file of htmlFiles) {
+  const content = fs.readFileSync(path.join(__dirname, file), 'utf-8');
   const dom = new JSDOM(content);
-  const document = dom.window.document;
+  const doc = dom.window.document;
 
-  let title = document.querySelector('title')?.textContent?.trim() || '';
-  if (!title) {
-    title = document.querySelector('h1')?.textContent?.trim() || '无标题';
-  }
+  const title = doc.querySelector('title')?.textContent.trim() || file;
+  const text = doc.body?.textContent?.replace(/\s+/g, ' ').trim() || '';
 
-  let bodyText = '';
-  const body = document.querySelector('body');
-  if (body) {
-    body.querySelectorAll('script, style, noscript').forEach(el => el.remove());
-    bodyText = body.textContent.replace(/\s+/g, ' ').trim();
-  }
-
-  return {
+  data.push({
     title,
-    url: path.basename(filePath),
-    content: bodyText,
-  };
+    content: text,
+    url: file
+  });
 }
 
-async function generateData() {
-  try {
-    const files = await fs.promises.readdir(folderPath);
-    const htmlFiles = files.filter(f => f.endsWith('.html'));
-
-    const results = [];
-    for (const file of htmlFiles) {
-      const filePath = path.join(folderPath, file);
-      const data = await extractDataFromFile(filePath);
-      results.push(data);
-    }
-
-    await fs.promises.writeFile(outputFile, JSON.stringify(results, null, 2), 'utf-8');
-    console.log(`成功生成 ${outputFile}，共 ${results.length} 条数据`);
-  } catch (err) {
-    console.error('生成数据出错:', err);
-  }
-}
-
-generateData();
+fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf-8');
+console.log(`✅ 已生成 data.json，共 ${data.length} 条记录`);

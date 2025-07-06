@@ -1,37 +1,30 @@
-[
-  {
-    "title": "Star",
-    "url": "blog-post-1.html",
-    "content": "dengruixun成功通过三独区赛！ dengruixun在三独区赛中成功拿下了进入市赛的名额！ dengruixun 2025年7月5日"
-  },
-  {
-    "title": "Star",
-    "url": "contact.html",
-    "content": "关于我们 QQ : 2632305468 微信 : 17570100361 邮箱 : xigou1834@163.com 电话 : 17570100361"
-  },
-  {
-    "title": "无标题",
-    "url": "footer.html",
-    "content": "版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。"
-  },
-  {
-    "title": "无标题",
-    "url": "header.html",
-    "content": "Star 产品 软件 网页 产品 资源 资源中心 博客 Star论坛 dengruixun的博客 开发者 帮助我们 加入我们 技术与支持 联系我们 技术文档"
-  },
-  {
-    "title": "Star",
-    "url": "index.html",
-    "content": "全新视角。 发现一种革命性的方式来体验您的世界。 凭借先进的技术和创新的设计，Star让未来更加光明。 了解更多 公司新闻 dengruixun成功通过三独区赛！ 2025年7月5日 创新设计获得国际奖项 2025年5月28日 创新发展 人工智能研究 我们的AI实验室正在开发下一代智能交互系统... 可持续技术 STAR致力于开发环保节能的创新解决方案..."
-  },
-  {
-    "title": "搜索结果 - STAR",
-    "url": "search-results.html",
-    "content": "STAR 产品 软件 网页 产品 搜索结果：\"\" 找到 0 条结果 版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。"
-  },
-  {
-    "title": "Star",
-    "url": "Technical documentation.html",
-    "content": "Github bilibili"
+const fs = require('fs');
+const path = require('path');
+const { JSDOM } = require('jsdom');
+
+const output = [];
+const exclude = ['header.html', 'footer.html', 'search-results.html'];
+
+fs.readdirSync(__dirname).forEach(file => {
+  const isHTML = file.endsWith('.html');
+  const isComponent = file.startsWith('_'); // 可选，用于排除 _header.html 这种
+  const isExcluded = exclude.includes(file);
+
+  if (isHTML && !isComponent && !isExcluded) {
+    const html = fs.readFileSync(path.join(__dirname, file), 'utf-8');
+    const dom = new JSDOM(html);
+    const doc = dom.window.document;
+
+    const title = doc.querySelector('title')?.textContent || '';
+    const bodyText = doc.body.textContent.replace(/\s+/g, ' ').trim();
+
+    output.push({
+      title,
+      content: bodyText,
+      url: file
+    });
   }
-]
+});
+
+fs.writeFileSync('data.json', JSON.stringify(output, null, 2), 'utf-8');
+console.log(`✅ 已生成 data.json，共 ${output.length} 条记录`);
