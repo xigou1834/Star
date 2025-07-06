@@ -2,29 +2,50 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 
-const pages = [
-  { file: 'index.html', url: 'index.html' },
-  { file: 'search-results.html', url: 'search-results.html' },
-  // 如有更多页面，继续添加...
-];
+const folderPath = path.resolve(__dirname);
+const outputFile = path.join(folderPath, 'data.json');
 
-const data = [];
-
-pages.forEach(page => {
-  const filePath = path.join(__dirname, page.file);
-  const html = fs.readFileSync(filePath, 'utf-8');
-  const dom = new JSDOM(html);
+async function extractDataFromFile(filePath) {
+  const content = await fs.promises.readFile(filePath, 'utf-8');
+  const dom = new JSDOM(content);
   const document = dom.window.document;
 
-  const title = document.querySelector('title')?.textContent || '';
-  const bodyText = document.body?.textContent?.replace(/\s+/g, ' ').trim() || '';
+  let title = document.querySelector('title')?.textContent?.trim() || '';
+  if (!title) {
+    title = document.querySelector('h1')?.textContent?.trim() || '无标题';
+  }
 
-  data.push({
+  let bodyText = '';
+  const body = document.querySelector('body');
+  if (body) {
+    body.querySelectorAll('script, style, noscript').forEach(el => el.remove());
+    bodyText = body.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  return {
     title,
-    url: page.url,
-    content: bodyText.slice(0, 1000), // 可适当裁剪或提取段落
-  });
-});
+    url: path.basename(filePath),
+    content: bodyText,
+  };
+}
 
-fs.writeFileSync('data.json', JSON.stringify(data, null, 2), 'utf-8');
-console.log('✅ 已生成 data.json');
+async function generateData() {
+  try {
+    const files = await fs.promises.readdir(folderPath);
+    const htmlFiles = files.filter(f => f.endsWith('.html'));
+
+    const results = [];
+    for (const file of htmlFiles) {
+      const filePath = path.join(folderPath, file);
+      const data = await extractDataFromFile(filePath);
+      results.push(data);
+    }
+
+    await fs.promises.writeFile(outputFile, JSON.stringify(results, null, 2), 'utf-8');
+    console.log(`成功生成 ${outputFile}，共 ${results.length} 条数据`);
+  } catch (err) {
+    console.error('生成数据出错:', err);
+  }
+}
+
+generateData();
