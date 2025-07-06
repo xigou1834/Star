@@ -1,0 +1,23 @@
+{
+  "name": "star",
+  "version": "1.0.0",
+  "main": "component-loader.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xigou1834/star.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xigou1834/star/issues"
+  },
+  "homepage": "https://github.com/xigou1834/star#readme",
+  "description": "",
+  "dependencies": {
+    "jsdom": "^26.1.0"
+  }
+}
