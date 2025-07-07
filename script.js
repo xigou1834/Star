@@ -97,3 +97,31 @@ searchForm?.addEventListener('submit', function (e) {
     window.location.href = `search-results.html?q=${encodeURIComponent(query)}`;
   }
 });
+// 在原有代码基础上修改以下部分
+
+let keepPanelOpen = false;
+
+// 修改搜索表单提交处理
+searchForm?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const query = searchInput?.value.trim();
+  if (query) {
+    keepPanelOpen = true;
+    setTimeout(() => {
+      window.location.href = `search-results.html?q=${encodeURIComponent(query)}`;
+      keepPanelOpen = false;
+    }, 500);
+  }
+});
+
+// 修改 blur 事件处理
+searchInput?.addEventListener('blur', () => {
+  if (!keepPanelOpen) {
+    searchInputFocused = false;
+    setTimeout(() => {
+      if (!searchPanelHovered && !searchInputFocused) {
+        searchDropdown?.classList.remove('active');
+      }
+    }, 300);
+  }
+});
