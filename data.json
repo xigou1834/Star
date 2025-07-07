@@ -6,17 +6,37 @@
   },
   {
     "title": "Star",
+    "content": "Star计划正式启动！ Star计划正式启动！我们将相继组织各种网站以及团队，逐步发展Star在各方面的力量。欢迎各位加入我们一起进行开发！网站正在逐步完善，敬请期待！ 2023年01月12日",
+    "url": "blog-post-2.html"
+  },
+  {
+    "title": "Star - 公司新闻",
+    "content": "公司新闻 dengruixun成功通过三独区赛！ 2025年07月05日 Star计划正式启动！ 2023年01月12日",
+    "url": "blog-post.html"
+  },
+  {
+    "title": "Star",
     "content": "关于我们 QQ : 2632305468 微信 : 17570100361 邮箱 : xigou1834@163.com 电话 : 17570100361",
     "url": "contact.html"
   },
   {
     "title": "Star",
-    "content": "全新视角。 发现一种革命性的方式来体验您的世界。 凭借先进的技术和创新的设计，Star让未来更加光明。 了解更多 公司新闻 dengruixun成功通过三独区赛！ 2025年7月5日 创新设计获得国际奖项 2025年5月28日 创新发展 人工智能研究 我们的AI实验室正在开发下一代智能交互系统... 可持续技术 STAR致力于开发环保节能的创新解决方案...",
+    "content": "全新视角。 发现一种革命性的方式来体验您的世界。 凭借先进的技术和创新的设计，Star让未来更加光明。 了解更多 公司新闻 dengruixun成功通过三独区赛！ 2025年07月05日 Star计划正式启动！ 2023年01月12日 创新发展 人工智能研究 我们将会逐步开发Star AI 新系统 Star OS将会是下一代操作系统，他不像Windows那样复杂，也不像MacOS那样臃肿...",
     "url": "index.html"
+  },
+  {
+    "title": "Star",
+    "content": "正在开发... 您可以加入我们 凭借先进的技术和创新的设计，Star让未来更加光明。 了解更多",
+    "url": "software.html"
   },
   {
     "title": "Star",
     "content": "Github bilibili",
     "url": "Technical documentation.html"
+  },
+  {
+    "title": "Star",
+    "content": "dengruixun洛谷的主页 dengruixun的邮箱",
+    "url": "website.html"
   }
 ]
