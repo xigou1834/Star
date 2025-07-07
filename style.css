@@ -466,3 +466,76 @@ footer p {
     transition-delay: 0.1s;
   }
 }
+/* 汉堡按钮只在小屏显示 */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #1d1d1f;
+}
+
+/* 手机竖屏：最大宽度768px下生效 */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;       /* 默认隐藏菜单 */
+    flex-direction: column;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    position: absolute;
+    top: 44px;           /* 高度为导航栏高度 */
+    left: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    z-index: 1000;
+  }
+
+  /* 展开状态时显示菜单 */
+  .nav-links.open {
+    display: flex;
+    max-height: 500px; /* 根据内容调大 */
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    padding: 12px 20px;
+    font-size: 14px;
+    display: block;
+  }
+
+  /* 下拉菜单改为点击展开，而非悬停 */
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  /* 子菜单展开 */
+  .dropdown.open > .dropdown-content {
+    max-height: 500px; /* 根据内容调整 */
+    padding: 8px 0;
+  }
+
+  /* 取消鼠标悬停的显示方式 */
+  .dropdown:hover > .dropdown-content {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+}
