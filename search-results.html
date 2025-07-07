@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>搜索结果 - Star</title>
+  <title>Star</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
@@ -16,125 +16,86 @@
   </style>
 </head>
 <body>
+  <div id="header"></div>
 
-<header>
-  <nav>
-    <div class="nav-container">
-      <div class="logo">
-        <a href="index.html" class="logo-link">Star</a>
+  <main>
+    <section class="search-results">
+      <div class="search-header">
+        <h1>"<span id="searchQuery"></span>" 的搜索结果</h1>
+        <p>找到 <span id="resultCount">0</span> 条结果</p>
       </div>
-      <ul class="nav-links">
-        <li><a href="index.html">首页</a></li>
-        <li class="dropdown">
-          <a href="#">产品</a>
-          <div class="dropdown-content">
-            <a href="#">软件</a>
-            <a href="#">网页</a>
-            <a href="#">硬件</a>
-          </div>
-        </li>
-        <li class="dropdown">
-          <a href="#">开发者</a>
-          <div class="dropdown-content">
-            <a href="#">文档</a>
-            <a href="#">API</a>
-          </div>
-        </li>
-        <li><a href="#">关于我们</a></li>
-        <li class="dropdown search-dropdown">
-          <a href="#"><i class="fas fa-search"></i></a>
-          <div class="dropdown-content search-panel">
-            <form action="search-results.html" method="get">
-              <input type="text" name="q" placeholder="搜索..." />
-              <button type="submit"><i class="fas fa-search"></i></button>
-            </form>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</header>
+      <div id="resultsContainer" class="results-container"></div>
+    </section>
+  </main>
 
-<main>
-  <section class="search-results">
-    <div class="search-header">
-      <h1>"<span id="searchQuery"></span>" 的搜索结果</h1>
-      <p>找到 <span id="resultCount">0</span> 条结果</p>
-    </div>
-    <div id="resultsContainer" class="results-container"></div>
-  </section>
-</main>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q') || '';
+      document.getElementById('searchQuery').textContent = query;
 
-<footer>
-  <p>版权所有 © 2023-2025. Star(dengruixun) 保留所有权利。</p>
-</footer>
+      fetch('data.json')
+        .then(res => res.json())
+        .then(data => {
+          const lowerQuery = query.toLowerCase();
+          const filtered = data.filter(item =>
+            item.title.toLowerCase().includes(lowerQuery) ||
+            item.content.toLowerCase().includes(lowerQuery)
+          );
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('q') || '';
-    document.getElementById('searchQuery').textContent = query;
+          const container = document.getElementById('resultsContainer');
+          const resultCount = document.getElementById('resultCount');
 
-    fetch('data.json')
-      .then(res => res.json())
-      .then(data => {
-        const lowerQuery = query.toLowerCase();
-        const filtered = data.filter(item =>
-          item.title.toLowerCase().includes(lowerQuery) ||
-          item.content.toLowerCase().includes(lowerQuery)
-        );
-
-        const container = document.getElementById('resultsContainer');
-        const resultCount = document.getElementById('resultCount');
-
-        if (filtered.length === 0) {
-          container.innerHTML = `
-            <p>没有找到与"<strong>${query}</strong>"相关的结果。</p>
-            <p>建议：</p>
-            <ul>
-              <li>检查输入是否正确</li>
-              <li>尝试不同的关键词</li>
-              <li>使用更通用的搜索词</li>
-            </ul>
-          `;
-          resultCount.textContent = '0';
-          return;
-        }
-
-        resultCount.textContent = filtered.length;
-
-        function highlight(text, keyword) {
-          const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          return text.replace(new RegExp(`(${escaped})`, 'gi'), '<span class="highlight">$1</span>');
-        }
-
-        container.innerHTML = filtered.map(item => {
-          let snippet = item.content;
-          const index = snippet.toLowerCase().indexOf(lowerQuery);
-          if (index >= 0) {
-            const start = Math.max(0, index - 20);
-            const end = Math.min(snippet.length, index + 80);
-            snippet = snippet.slice(start, end) + (end < snippet.length ? '...' : '');
-          } else {
-            snippet = snippet.slice(0, 100) + '...';
+          if (filtered.length === 0) {
+            container.innerHTML = `
+              <p>没有找到与"<strong>${query}</strong>"相关的结果。</p>
+              <p>建议：</p>
+              <ul>
+                <li>检查输入是否正确</li>
+                <li>尝试不同的关键词</li>
+                <li>使用更通用的搜索词</li>
+              </ul>
+            `;
+            resultCount.textContent = '0';
+            return;
           }
 
-          return `
-            <div class="result-card">
-              <h2><a href="${item.url}" target="_blank">${highlight(item.title, query)}</a></h2>
-              <p class="url">${item.url}</p>
-              <p class="snippet">${highlight(snippet, query)}</p>
-            </div>
-          `;
-        }).join('');
-      })
-      .catch(err => {
-        document.getElementById('resultsContainer').innerHTML = `<p>加载搜索数据失败，请稍后重试。</p>`;
-        document.getElementById('resultCount').textContent = '0';
-        console.error(err);
-      });
-  });
-</script>
+          resultCount.textContent = filtered.length;
 
+          function highlight(text, keyword) {
+            const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return text.replace(new RegExp(`(${escaped})`, 'gi'), '<span class="highlight">$1</span>');
+          }
+
+          container.innerHTML = filtered.map(item => {
+            let snippet = item.content;
+            const index = snippet.toLowerCase().indexOf(lowerQuery);
+            if (index >= 0) {
+              const start = Math.max(0, index - 20);
+              const end = Math.min(snippet.length, index + 80);
+              snippet = snippet.slice(start, end) + (end < snippet.length ? '...' : '');
+            } else {
+              snippet = snippet.slice(0, 100) + '...';
+            }
+
+            return `
+              <div class="result-card">
+                <h2><a href="${item.url}" target="_blank">${highlight(item.title, query)}</a></h2>
+                <p class="url">${item.url}</p>
+                <p class="snippet">${highlight(snippet, query)}</p>
+              </div>
+            `;
+          }).join('');
+        })
+        .catch(err => {
+          document.getElementById('resultsContainer').innerHTML = `<p>加载搜索数据失败，请稍后重试。</p>`;
+          document.getElementById('resultCount').textContent = '0';
+          console.error(err);
+        });
+    });
+  </script>
+
+  <script src="component-loader.js"></script>
+  <div id="footer"></div>
 </body>
 </html>

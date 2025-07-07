@@ -446,3 +446,23 @@ footer p {
 .logo-link:hover {
     opacity: 0.8;          /* 鼠标悬停时淡入效果，可选 */
 }
+/* 确保搜索面板在输入时保持可见 */
+.search-dropdown.active .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  display: block !important;
+}
+
+/* 防止移动设备上的意外关闭 */
+@media (max-width: 768px) {
+  .search-panel {
+    right: -50px;
+    width: 280px;
+  }
+  
+  .search-dropdown.active .dropdown-content {
+    transition-delay: 0.1s;
+  }
+}
