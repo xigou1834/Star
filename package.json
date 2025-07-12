@@ -1,0 +1,14 @@
+{
+  "name": "star",
+  "version": "1.0.0",
+  "scripts": {
+    "generate": "node generate-data.js",
+    "watch": "nodemon --watch '*.html' --exec \"node generate-data.js\""
+  },
+  "dependencies": {
+    "jsdom": "^24.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
