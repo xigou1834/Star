@@ -3,7 +3,7 @@ const path = require('path');
 const { JSDOM } = require('jsdom');
 
 const directory = __dirname;
-const excludeFiles = ['header.html', 'footer.html', 'search-results.html'];
+const excludeFiles = ['header.html', 'footer.html', 'search-results.html','changelog.html','index.html'];
 const outputFile = path.join(directory, 'data.json');
 
 function extractContent(html, filePath) {
