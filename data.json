@@ -1,32 +1,12 @@
 [
   {
-    "title": "Star",
-    "content": "",
-    "url": "blog-post-3.html"
-  },
-  {
-    "title": "Star - 联系我们",
-    "content": "关于我们 QQ : 2632305468 微信 : 17570100361 邮箱 : xigou1834@163.com 电话 : 17570100361",
-    "url": "contact.html"
-  },
-  {
-    "title": "Star - App",
+    "title": "Star - 软件",
     "content": "正在开发... 您可以加入我们 凭借先进的技术和创新的设计，Star让未来更加光明。 多线程下载器 Fish_redflying",
     "url": "software.html"
   },
   {
-    "title": "Star - 商店",
-    "content": "选购 选购 Phone 选购 Atlas Book 选购 Power Base 选购 Watch 选购耳机 Star 商店 查找零售店 活动 Star 学习 App 认证的翻新产品 Star Renew 换购计划 分期付款 畅销配件 Phone 专区 保护壳 充电器 Canvas 专区 保护壳 充电器 服务 StarCare+ 技术文档 所有板块 选购你心仪的商品 选购 Phone 新系统 Atlas将会是下一代操作系统，他不像Windows那样复杂，也不像MacOS那样臃肿...",
-    "url": "store.html"
-  },
-  {
-    "title": "Star",
-    "content": "公司高管 dengruixun 软件组 Fish_redflying 网站维护组 tzzl3035",
-    "url": "team.html"
-  },
-  {
-    "title": "Star",
-    "content": "Github bilibili",
-    "url": "Technical documentation.html"
+    "title": "Star - 技术文档",
+    "content": "总章 选购 Phone 选购 Atlas Book 选购 Power Base 选购 Watch 选购耳机 Github bilibili",
+    "url": "technical-documentation.html"
   }
 ]
